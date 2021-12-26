@@ -1,66 +1,87 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+<h1 align="center">Laravel Currency Exchange API</h1>
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
 
-## About Laravel
+## Overview
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+A simple Laravel application used for interacting with the [exchangeratesapi.io](http://exchangeratesapi.io) API. 'Laravel Currency Exchange API'
+allow you to get the latest exchange rates and convert monetary values between different currencies.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Requirements
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+The application has been developed and tested to work with the following minimum requirements:
 
-## Learning Laravel
+- PHP 8
+- Laravel 8
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Getting Your API Key
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+As of 1st April 2021, the exchangeratesapi.io now requires an API key to use the service. To get an API key, head over to
+[https://exchangeratesapi.io/pricing](https://exchangeratesapi.io/pricing). You can sign up for free or use the paid tiers.
 
-## Laravel Sponsors
+Please note that at the time of writing this, you will need to be on at least the 'Basic' plan to make request via HTTPS.  
+You will also be required to have at least the 'Basic' paid plan to use ` exchange() ` method offered by
+this application due to the fact that the free plan does not allow setting a base currency when converting.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+Free key to test: 0b44d364dcfef4bcd08e502ebfe67e45
 
-### Premium Partners
+## Endpoints
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[CMS Max](https://www.cmsmax.com/)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
-- **[Romega Software](https://romegasoftware.com)**
+Latest Rates Endpoint:
 
-## Contributing
+``` php
+http://localhost:8000/api/v1/currencies
+    ? access_key = API_KEY
+    & base = BASE
+    & symbols = SYMBOLS
+```
+Example:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+``` php
+http://localhost:8000/api/v1/currencies?access_key=0b44d364dcfef4bcd08e502ebfe67e45&base=EUR&symbols=AUD,BRL,CAD,CHF,GBP,JPY,USD
+```
+Request Parameters:
 
-## Code of Conduct
+|Parameter  |Description                                                                            |
+|-----------|---------------------------------------------------------------------------------------|
+|access_key |[required] Your API Key.                                                               |
+|base       |[optional] Enter the three-letter currency code of your preferred base currency.       |
+|symbols    |[optional] Enter a list of comma-separated currency codes to limit output currencies.  |
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+</br>
+</br>
 
-## Security Vulnerabilities
+Exchange Endpoint:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+``` php
+http://localhost:8000/api/v1/currencies/exchange
+    ? access_key = API_KEY
+    & from = FROM
+    & to = TO
+    & amount = AMOUNT
+```
+Example:
 
-## License
+``` php
+http://localhost:8000/api/v1/currencies/exchange?access_key=0b44d364dcfef4bcd08e502ebfe67e45&from=GBP&to=JPY&amount=25
+```
+Request Parameters:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+|Parameter  |Description                                                                                |
+|-----------|-------------------------------------------------------------------------------------------|
+|access_key |[required] Your API Key.                                                                   |
+|from       |[required] The three-letter currency code of the currency you would like to convert from.  |
+|to         |[required] The three-letter currency code of the currency you would like to convert to.    |
+|amount     |[required] The amount to be converted.                                                     |
+
+</br>
+
+A Postman Collection is available at the root of the project.
+
+## Start server
+
+Use the following command on the project folder:
+
+```bash
+php artisan serve
+```
+
