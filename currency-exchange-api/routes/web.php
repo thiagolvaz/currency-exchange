@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CurrencyExchangeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,3 +17,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/api/v1/currencies', [CurrencyExchangeController::class, 'getCurrencies']);
+Route::get('/api/v1/currencies/exchange', [CurrencyExchangeController::class, 'exchange']);
